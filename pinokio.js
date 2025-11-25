@@ -3,18 +3,20 @@ module.exports = {
   link: "https://kiro.dev",
   icon: "kiro.JPEG",
   description: "AI-powered IDE for developers",
-  update: [{
-    method: "shell.run",
-    params: {
-      message: "git pull"
-    }
-  }],
   run: [{
-    method: "app.launch",
+    when: "{{which('kiro')}}",
+    method: "exec",
     params: {
-      install: "https://kiro.dev",
-      app: "Kiro",
-      args: ["{{args.cwd}}"]
+      message: "kiro .",
+      path: "{{args.cwd}}"
+    }
+  }, {
+    when: "{{!which('kiro')}}",
+    method: "notify",
+    params: {
+      html: "Kiro is not installed. Click to visit the Kiro homepage to download",
+      href: "https://kiro.dev",
+      target: "_blank"
     }
   }]
 }
